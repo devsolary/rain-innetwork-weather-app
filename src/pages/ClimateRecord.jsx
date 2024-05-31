@@ -109,7 +109,7 @@ const ClimateRecord = () => {
     setCurrentLocation()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[location, date]);
+  },[location, date, weatherForecast]);
 
   return (
     <div className='bg-[#0A192F] h-full overflow-x-hidden px-[5vw] w-[100vw] overflow-y-scroll'>
