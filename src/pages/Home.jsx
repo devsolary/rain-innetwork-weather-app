@@ -145,7 +145,7 @@ const Home = () => {
       <div className="py-5 flex flex-row overflow-x-scroll whitespace-nowrap items-center">
       { 
         currentWeather.forecast.forecastday[0].hour.map((hourData, i) => (
-          <div key={i} className="flex-none bg-[rgb(26,46,79)] h-[25vh] w-[100px] rounded-2xl px-[5px] mr-[10px]">
+          <div key={i} className="flex-none bg-[rgb(26,46,79)] h-[25vh] w-[30vw] rounded-2xl px-[5px] mr-[10px]">
           <CiCloud className=" text-[40px] text-white" />
           <p className="text-3xl font-bold text-white">{hourData.temp_c}&deg;</p>
           <p className="text-[10px] font-bold text-white">{hourData.condition.text}</p>
