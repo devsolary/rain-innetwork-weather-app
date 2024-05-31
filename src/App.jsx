@@ -5,6 +5,7 @@ import ClimateRecord from './pages/ClimateRecord'
 import ComparativeWeather from './pages/ComparativeWeather'
 import Home from "./pages/Home"
 
+
 function App() {
 
   return (

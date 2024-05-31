@@ -8,7 +8,6 @@ import { FaWind } from "react-icons/fa";
 import { MdVisibility } from "react-icons/md";
 import { FaDroplet } from "react-icons/fa6";
 import { MdFoggy } from "react-icons/md";
-import { CiCirclePlus } from "react-icons/ci";
 import ComparativeGraph from "../components/ComparativeGraph";
 import Header from "../components/Header";
 import axios from "axios";
@@ -44,11 +43,17 @@ const getCityName = async (latitude, longitude) => {
 }
 
 
+// eslint-disable-next-line react/prop-types
 const Home = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("lagos");
   const [dayName, setDayName] = useState("");
-  const [dayparts, setDayparts] = useState("");
+
+
+  const handleLocationChange = (newCity) => {
+    setLocation(newCity);
+  }
+
 
 
   useEffect(() => {
@@ -60,11 +65,10 @@ const Home = () => {
     setDayName(days[dayIndex])
   },[])
 
-  useEffect(() => {
-    const fetchWeather = async () => {
+    const fetchWeather = async (days) => {
 
       const apiKey = "25dd3b4a690e4c1b8fd111324242505";
-      const currentUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`;
+      const currentUrl = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}&aqi=no&alerts=no`;
 
       try {
         const currentRespond = await axios.get(currentUrl);
@@ -75,6 +79,7 @@ const Home = () => {
       }
     };
 
+
     console.log(currentWeather);
 
     const setCurrentLocation = async () => {
@@ -83,71 +88,73 @@ const Home = () => {
         const city = await getCityName(position.latitude, position.longitude);
         if(city) {
           setLocation(city);
-          fetchWeather();
         }
       } catch (error) {
         console.error(error)
       }
+      fetchWeather();
     };
 
-    setCurrentLocation()
-  },[]);
+    useEffect(() => {
+      setCurrentLocation()
+    }, [location])
 
 
   
-  //   useEffect(() => {
-  //    if(parseInt(currentWeather.location.localtime.slice(10, 12)) <= 4){
-  //     setDayparts("Midnight")
-  //    } else if(parseInt(currentWeather.location.localtime.slice(10, 12)) > 4 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 6) {
-  //     setDayparts("Early morning")
-  //    } else if(parseInt(currentWeather.location.localtime.slice(10, 12)) > 6 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 11) {
-  //     setDayparts("Morning")
-  //    } else if (parseInt(currentWeather.location.localtime.slice(10, 12)) > 11 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 17) {
-  //     setDayparts("Afternoon")
-  //    } else if (parseInt(currentWeather.location.localtime.slice(10, 12)) > 17 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 19) {
-  //     setDayparts("Evening")
-  //    } else if (parseInt(currentWeather.location.localtime.slice(10, 12)) > 19 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 23) {
-  //     setDayparts("Evening")
-  //    } else {
-  //     setDayparts("Morning")
-  //    }
-  // },[currentWeather])
+    useEffect(() => {
+      
+    //  if(parseInt(currentWeather.location.localtime.slice(10, 12)) <= 4){
+    //   setDayparts("Midnight")
+    //  } else if(parseInt(currentWeather.location.localtime.slice(10, 12)) > 4 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 6) {
+    //   setDayparts("Early morning")
+    //  } else if(parseInt(currentWeather.location.localtime.slice(10, 12)) > 6 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 11) {
+    //   setDayparts("Morning")
+    //  } else if (parseInt(currentWeather.location.localtime.slice(10, 12)) > 11 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 17) {
+    //   setDayparts("Afternoon")
+    //  } else if (parseInt(currentWeather.location.localtime.slice(10, 12)) > 17 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 19) {
+    //   setDayparts("Evening")
+    //  } else if (parseInt(currentWeather.location.localtime.slice(10, 12)) > 19 && parseInt(currentWeather.location.localtime.slice(10, 12)) <= 23) {
+    //   setDayparts("Evening")
+    //  } else {
+    //   setDayparts("Morning")
+    //  }
+
+  },[currentWeather])
 
 
   return (
     <div className='bg-[#0A192F] h-full overflow-x-hidden px-[5vw] w-[100vw]'>
+     <Header onCityChange={handleLocationChange} />
       {currentWeather ? (<div>
-        <Header />
-        <div className="w-full mt-10 h-[30vh] bg-sunnyImg bg-cover bg-center rounded-3xl p-2">
+        <div className="w-full mt-14 h-[30vh] bg-sunnyImg bg-cover bg-center rounded-3xl p-2">
 
         <div className="flex flex-row">
           <div>
             <CiSun className=" text-[50px]" />
             <p className="text-6xl font-bold">{currentWeather.current.temp_c}&deg;</p>
-            <p className="font-bold text-xl">{currentWeather.current.condition.text}</p>
+            <p className="font-bold text-2xl">{currentWeather.current.condition.text}</p>
             <p>{currentWeather.location.name + ", " + currentWeather.location.country}</p>
           </div>
           <div className="ml-auto mt-auto ">
           <p className="text-right font-bold">{currentWeather.location.localtime.slice(10)}</p>
-          <p className="text-right font-bold">{dayparts} {dayName}</p>
+          <p className="text-right font-bold"> {dayName}</p>
           <p className="text-right font-bold">{currentWeather.location.localtime.slice(0, 11)}</p>
           </div>
         </div>
       </div>
-      <div className="py-5 flex overflow-x-hidden items-center">
-        <div className="bg-[#1A2E4F] h-[25vh] w-[100px] rounded-2xl px-[5px] mr-[10px]">
+      <div className="py-5 flex flex-row overflow-x-scroll whitespace-nowrap items-center">
+      { 
+        currentWeather.forecast.forecastday[0].hour.map((hourData, i) => (
+          <div key={i} className="flex-none bg-[rgb(26,46,79)] h-[25vh] w-[100px] rounded-2xl px-[5px] mr-[10px]">
           <CiCloud className=" text-[40px] text-white" />
-          <p className="text-3xl font-bold text-white">31&deg;</p>
-          <p className="text-[10px] font-bold text-white">Mostly Sunny</p>
-          <p className="text-white text-[10px]">Abuja Nigeria</p>
-          <p className="text-[10px] font-bold text-white mt-2">11:15 am</p>
+          <p className="text-3xl font-bold text-white">{hourData.temp_c}&deg;</p>
+          <p className="text-[10px] font-bold text-white">{hourData.condition.text}</p>
+          <p className="text-white text-[10px]">{currentWeather.location.name}</p>
+          <p className="text-[10px] font-bold text-white mt-2">{hourData.time}</p>
           <p className="text-[7px] text-white">Late Morning, Thursday</p>
         </div>
-        <div className="bg-[#1A2E4F] h-[25vh] w-[100px] rounded-2xl px-[5px] mr-[10px] items-center justify-center flex flex-col" >
-          <CiCirclePlus className="text-white text-4xl" />
-          <br />
-          <div className="text-white font-bold">Add a City</div>
-        </div>
+        ))
+      }
       </div>
       <div className="mb-5">
         <div className="flex w-[90vw] px-5 py-3 bg-[#1A2E4F] rounded-2xl">
@@ -181,7 +188,8 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <ComparativeGraph /> </div>) : (<div className="h-[100vh] w-[100vw] bg-[#0A192F] "><p className="text-white text-center mt-[40vh] text-4xl font-bold">Loading...</p></div>)}
+      <ComparativeGraph weatherData={currentWeather} /> 
+      </div>) : (<div className="h-[100vh] w-[100vw] bg-[#0A192F] "><p className="text-white text-center mt-[40vh] text-4xl font-bold">Loading...</p></div>)}
     </div>
   )
 }
