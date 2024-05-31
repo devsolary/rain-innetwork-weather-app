@@ -62,7 +62,7 @@ const ComparativeWeather = () => {
   const fetchWeather = async (date) => {
 
     const apiKey = "25dd3b4a690e4c1b8fd111324242505";
-  const response = `http://api.weatherapi.com/v1/history.json?key=${apiKey}&q=${location}&dt=${date}`
+  const response = `https://api.weatherapi.com/v1/history.json?key=${apiKey}&q=${location}&dt=${date}`
 
   try {
     const responseData = await axios.get(response);

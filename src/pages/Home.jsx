@@ -68,7 +68,7 @@ const Home = () => {
     const fetchWeather = async (days) => {
 
       const apiKey = "25dd3b4a690e4c1b8fd111324242505";
-      const currentUrl = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}&aqi=no&alerts=no`;
+      const currentUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}&aqi=no&alerts=no`;
 
       try {
         const currentRespond = await axios.get(currentUrl);
@@ -97,7 +97,7 @@ const Home = () => {
 
     useEffect(() => {
       setCurrentLocation()
-    }, [location, currentWeather])
+    }, [location])
 
 
   

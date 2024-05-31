@@ -78,7 +78,7 @@ const ClimateRecord = () => {
     const fetchWeather = async () => {
 
       const apiKey = "25dd3b4a690e4c1b8fd111324242505";
-    const forecastUrl = `http://api.weatherapi.com/v1/history.json?key=${apiKey}&q=${location}&dt=${date}`
+    const forecastUrl = `https://api.weatherapi.com/v1/history.json?key=${apiKey}&q=${location}&dt=${date}`
 
     try {
       const forecastResponds = await axios.get(forecastUrl);
@@ -109,7 +109,7 @@ const ClimateRecord = () => {
     setCurrentLocation()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[location, date, weatherForecast]);
+  },[location, date]);
 
   return (
     <div className='bg-[#0A192F] h-full overflow-x-hidden px-[5vw] w-[100vw] overflow-y-scroll'>
