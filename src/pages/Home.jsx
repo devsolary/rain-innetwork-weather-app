@@ -126,9 +126,8 @@ const Home = () => {
     <div className='bg-[#0A192F] h-full overflow-x-hidden px-[5vw] w-[100vw]'>
      <Header onCityChange={handleLocationChange} />
       {currentWeather ? (<div>
-        <div className="w-full mt-14 h-[30vh] bg-sunnyImg bg-cover bg-center rounded-3xl p-2">
-
-        <div className="flex flex-row text-white">
+        <div className="w-full mt-14 h-[30vh] bg-[#1A2E4F] bg-cover bg-center rounded-3xl p-2">
+        <div className="flex flex-row text-white  ">
           <div>
             <CiSun className=" text-[50px]" />
             <p className="text-6xl font-bold">{currentWeather.current.temp_c}&deg;</p>
